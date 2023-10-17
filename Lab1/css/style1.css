@@ -1,0 +1,56 @@
+body {
+}
+
+h1 {
+    text-align: center;
+    background-color: burlywood;
+    font-family: monospace;
+}
+
+h2 {
+    background-color: bisque;
+    font-family: monospace;
+}
+
+h3 {
+    font-family: monospace;
+}
+
+li {
+    font-family: monospace;
+}
+
+footer {
+    text-align: center;
+    background-color: burlywood;
+    font-family: monospace;
+}
+
+div.container {
+    display: flex;
+}
+
+div.list {
+    flex: 1;
+    background-color: darkgray;
+
+}
+
+div.images {
+    flex: 2;
+    text-align: left;
+}
+
+.image {
+    height: calc(100px);
+    transform: translate(20px);
+}
+
+p.definicja {
+    text-align: left;
+}
+
+p.definicja:hover {
+    background-color: lightgrey;
+    font-size: 20px;
+}

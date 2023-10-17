@@ -1,0 +1,46 @@
+h1 {
+    text-align: left;
+    text-decoration: underline overline;
+}
+
+h2 {
+    text-decoration: underline overline;
+}
+
+h3 {
+    text-decoration: underline;
+}
+
+p.definicja {
+    background-color: burlywood;
+}
+
+li {
+    list-style: upper-roman;
+}
+
+div.container {
+    display: flex;
+    opacity: 80%;
+    background-image: url("../images/background.webp");
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+div.list {
+    flex: 1;
+}
+
+div.images {
+    flex: 2;
+    text-align: center;
+}
+
+.image {
+    height: 100px;
+}
+
+footer {
+    background-color: lightgoldenrodyellow;
+    font-weight: bolder;
+}
