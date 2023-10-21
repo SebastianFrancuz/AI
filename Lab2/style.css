@@ -1,0 +1,8 @@
+label.name, input.changeName, input.createName {
+    width: 200px;
+    display: inline-block;
+}
+
+ul li.done {
+    background-color: green;
+}
