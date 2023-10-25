@@ -1,8 +1,12 @@
-label.name, input.changeName, input.createName {
+label.name, input.changeName, label.date, label.changeDate {
     width: 200px;
     display: inline-block;
 }
 
 ul li.done {
-    background-color: green;
+    background-color: lightgreen;
+}
+
+button.remove-button {
+    background-color: red;
 }
