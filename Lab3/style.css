@@ -1,0 +1,29 @@
+#map {
+    width: 600px;
+    height: 300px;
+    border: 1px solid black;
+}
+
+.puzzle {
+    width: 150px;
+    height: 75px;
+    cursor: grab;
+}
+
+#drag-target {
+    width: 600px;
+    height: 300px;
+    position: relative;
+    border: 1px solid black;
+}
+
+.drag-target-cell {
+    width: 150px;
+    height: 75px;
+    position: absolute;
+    border: 1px solid black;
+}
+
+#flex {
+    display: flex;
+}
