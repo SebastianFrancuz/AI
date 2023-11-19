@@ -1,7 +1,8 @@
-const PUZZLE_X_MAX = 4;
-const PUZZLE_Y_MAX = 4;
+const PUZZLE_X_MAX = 4; //ilość puzzli w poziomie
+const PUZZLE_Y_MAX = 4; //ilość puzzli w pionie
 
-let permission = Notification.permission;
+const PUZZLE_ID_BASE = "puzzle";
+const DRAG_TARGET_ID_BASE = "drag-target-cell";
 
 let map = L.map('map').setView([53.430127, 14.564802], 18);
 L.tileLayer.provider('Esri.WorldImagery').addTo(map);
@@ -19,8 +20,8 @@ puzzles.addEventListener("drop", function (event) {
 
 document.getElementById("saveButton").addEventListener("click", function() {
     leafletImage(map, function (err, canvas) {
-        const w = 600 / PUZZLE_X_MAX; //150
-        const h = 300 / PUZZLE_Y_MAX; //75
+        const w = canvas.width / PUZZLE_X_MAX;
+        const h = canvas.height / PUZZLE_Y_MAX;
 
         while(puzzles.firstChild) {
             puzzles.removeChild(puzzles.firstChild);
@@ -37,8 +38,10 @@ document.getElementById("saveButton").addEventListener("click", function() {
                 for (let x = 0; x < PUZZLE_X_MAX; x++) {
                     let c = document.createElement("canvas");
                     c.setAttribute("class", "puzzle");
-                    c.setAttribute("id", "puzzle" + id);
+                    c.setAttribute("id", PUZZLE_ID_BASE + id);
                     c.setAttribute("draggable", "true");
+                    c.style.width = w + "px";
+                    c.style.height = h + "px";
 
                     c.addEventListener("dragstart", function(event) {
                         c.style.border = "5px dashed #D8D8FF";
@@ -51,7 +54,7 @@ document.getElementById("saveButton").addEventListener("click", function() {
 
 
                     let ctx = c.getContext("2d");
-                    ctx.drawImage(img, x * w, y * h, w, h, 0, 0, w * 2, h * 2);
+                    ctx.drawImage(img, x * w, y * h, w, h, 0, 0, c.width, c.height);
 
                     imgs.push(c);
 
@@ -73,21 +76,24 @@ document.getElementById("saveButton").addEventListener("click", function() {
             for(let i = 0; i < PUZZLE_X_MAX * PUZZLE_Y_MAX; i++) {
                 let dragTargetCell = document.createElement("div");
                 dragTargetCell.setAttribute("class", "drag-target-cell");
-                dragTargetCell.setAttribute("id", "drag-target" + i);
-                dragTargetCell.style.left = (i % 4) * w + "px";
-                dragTargetCell.style.top = Math.floor(i / 4) * h + "px";
+                dragTargetCell.setAttribute("id", DRAG_TARGET_ID_BASE + i);
+                dragTargetCell.style.left = (i % PUZZLE_X_MAX) * w + "px";
+                dragTargetCell.style.top = Math.floor(i / PUZZLE_X_MAX) * h + "px";
+
+                dragTargetCell.style.width = w + "px";
+                dragTargetCell.style.height = h + "px";
 
                 dragTargetCell.addEventListener("dragover", function (event) {
                     event.preventDefault();
                 });
 
                 dragTargetCell.addEventListener("drop", function (event) {
-                    if (dragTargetCell.firstChild != null) {
-                        return;
-                    }
                     let myElement = document.querySelector("#" + event.dataTransfer.getData('text'));
-                    this.appendChild(myElement);
+                    if (dragTargetCell.firstChild != null /*&& myElement.parentElement != null*/) {
+                        myElement.parentElement.appendChild(dragTargetCell.firstChild); //podmiana
+                    }
 
+                    this.appendChild(myElement);
                     win();
                 }, false);
 
@@ -128,25 +134,27 @@ function win() {
     for (let dragTargetCell of dragTarget.children) {
         if (dragTargetCell.firstChild == null) {
             console.log("Brak zwycięstwa!");
-            return; //brak zwycięstwa
+            return;
         }
         let puzzle = dragTargetCell.firstChild;
-        let id1 = parseInt(dragTargetCell.id.substring(("drag-target").length, dragTargetCell.id.length));
-        let id2 = parseInt(puzzle.id.substring(("puzzle").length, puzzle.id.length));
+        let id1 = parseInt(dragTargetCell.id.substring(DRAG_TARGET_ID_BASE.length, dragTargetCell.id.length));
+        let id2 = parseInt(puzzle.id.substring(PUZZLE_ID_BASE.length, puzzle.id.length));
 
         if (id1 !== id2) {
             console.log("Brak zwycięstwa!");
-            return; // brak zwycięstwa
+            return;
         }
     }
 
     //dragTarget.style.border = "3px solid green";
     console.log("Zwycięstwo!");
+
+    let permission = Notification.permission;
     if (permission === "granted") {
         winNotification();
     } else if (permission === "default") {
         Notification.requestPermission().then((permission) => {
-            if (permission !== "granted") {
+            if (permission === "granted") {
                 winNotification();
             }
         });
@@ -157,6 +165,6 @@ function win() {
 
 function winNotification() {
     const notification = new Notification("Wygrałeś/-aś!", {
-        body: "Brawo udało Ci się ułożyć puzzle!"
+        body: "Brawo, udało Ci się ułożyć puzzle!"
     });
 }
