@@ -1,0 +1,12 @@
+#search {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+#weathers {
+    text-align: center;
+}
+
+div.weather-block {
+    border: 2px solid black;
+}

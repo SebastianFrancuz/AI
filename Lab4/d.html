@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Pogodynka</title>
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="weather.css"/>
 </head>
 <body>
-    <p align="center">
-        <input type="text"/>
+    <div id="search">
+        <input type="text" id="search-input"/>
         <br/>
         <br/>
-        <button>Pogoda</button>
-    </p>
+        <button id="search-button" onclick="onSearch()">Pogoda</button>
+    </div>
+
+    <div id="weathers"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
